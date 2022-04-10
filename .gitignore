@@ -8,3 +8,11 @@
 *.yml
 *.gz
 *.zip
+*.sqsh
+
+# slurm
+*.err
+*.out
+
+# python
+__pycache__

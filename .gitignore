@@ -16,3 +16,9 @@
 
 # python
 __pycache__
+
+# model
+*.pth
+
+# res
+.DS_Store

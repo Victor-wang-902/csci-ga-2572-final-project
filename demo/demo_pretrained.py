@@ -25,7 +25,7 @@ def get_transform(train):
     return T.Compose(transforms)
 
 def get_model(num_classes):
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -53,7 +53,8 @@ def main():
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
 
-    num_epochs = 50
+    num_epochs = 20
+    evaluate(model, valid_loader, device=device)
     
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
@@ -63,7 +64,7 @@ def main():
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
         # save check point
-        torch.save(model.state_dict(), "check_point_demo.pth")
+        # torch.save(model.state_dict(), "check_point_demo.pth")
 
     print("That's it!")
 

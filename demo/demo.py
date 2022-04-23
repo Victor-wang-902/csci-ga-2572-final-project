@@ -3,6 +3,7 @@
 # modified from https://pytorch.org/docs/stable/data.html
 
 import os
+import argparse
 
 import torch
 import torch.nn as nn
@@ -17,15 +18,22 @@ from engine import train_one_epoch, evaluate
 
 from dataset import UnlabeledDataset, LabeledDataset
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-o', '--optimizer', type=str, default='sgd', help='adam or sgd')
+parser.add_argument('-n', '--n_epochs', type=int, default=30, help='number of epochs')
+parser.add_argument('--lr',type=float,default='0.05',help='initial learning rate')
+opt = parser.parse_args()
+
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
+    transforms.append(T.Normalization())
     if train:
-        transforms.append(T.RandomHorizontalFlip(0.5))
+        transforms.insert(1, T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
 
 def get_model(num_classes):
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False)
+    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=False, pretrained_backbone=False)
 
     # get number of input features for the classifier
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -50,10 +58,15 @@ def main():
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
+    if opt.optimizer == 'sgd':
+        optimizer = torch.optim.SGD(params, lr=opt.lr, momentum=0.9, weight_decay=0.005)
+        lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.2)
+    elif opt.optimizer == 'adam':
+        optimizer = torch.optim.Adam(params, lr=opt.lr)
+    else:
+        assert False, "Optimizer have to be sgd or adam"
 
-    num_epochs = 50
+    num_epochs = opt.n_epochs
     
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations

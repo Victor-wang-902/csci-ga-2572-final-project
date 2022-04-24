@@ -53,12 +53,4 @@ class ToTensor(object):
 class Normalization(object):
     def __call__(self, image, target):
         image = F.normalize(image, mean=[0.49, 0.468, 0.414], std=[0.286, 0.278, 0.297])
-        if target is None:
-            return image, None
-        target = target.copy()
-        h, w = image.shape[-2:]
-        if "boxes" in target:
-            boxes = target["boxes"]
-            boxes = boxes / torch.tensor([w, h, w, h], dtype=torch.float32)
-            target["boxes"] = boxes
         return image, target

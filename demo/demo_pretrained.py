@@ -20,9 +20,8 @@ from dataset import UnlabeledDataset, LabeledDataset
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
-    transforms.append(T.Normalization())
     if train:
-        transforms.insert(1, T.RandomHorizontalFlip(0.5))
+        transforms.append(T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
 
 def get_model(num_classes):
@@ -51,7 +50,7 @@ def main():
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
-    optimizer = torch.optim.SGD(params, lr=0.01, momentum=0.9, weight_decay=0.0005)
+    optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
 
     num_epochs = 20

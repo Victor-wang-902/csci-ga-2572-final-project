@@ -29,9 +29,8 @@ opt = parser.parse_args()
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
-    transforms.append(T.Normalization())
     if train:
-        transforms.insert(1, T.RandomHorizontalFlip(0.5))
+        transforms.append(T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
 
 def get_model(num_classes):
@@ -90,7 +89,7 @@ def main():
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
         # save check point
-        save_name = "check_point_bt"+opt.optimizer+str(opt.lr)+".pth"
+        save_name = "check_point_bt2"+opt.optimizer+str(opt.lr)+".pth"
         torch.save(model.state_dict(), save_name)
 
     print("That's it!")

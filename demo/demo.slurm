@@ -18,5 +18,5 @@ singularity exec --nv \
 /scratch/work/public/singularity/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
-python barlowtwins.py -o adam -n 30 --lr 0.005
+python vicreg.py -o adam -n 30 --lr 0.0005
 "

@@ -27,9 +27,8 @@ opt = parser.parse_args()
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
-    transforms.append(T.Normalization())
     if train:
-        transforms.insert(1, T.RandomHorizontalFlip(0.5))
+        transforms.append(T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
 
 def get_model(num_classes):

@@ -4,6 +4,10 @@ Final competition code repository for CSCI-GA 2572 Deep Learning spring 2022.
 All codes in this repository were run on Greene.
 
 ## Pretraining
+Perform Barlow twins pretraining of resnet50 inside Obj_SSL_barlow(from https://github.com/facebookresearch/barlowtwins)
+
+1. Change the overlay path in `Obj_SSL_barlow/demo.slurm` to your corresponding path for environment and unlabeled dataset. 
+2. run demo.slurm to train barlow twins for 150 epochs. Loss should drop to ~375 . The pretrained model will be available in "Obj_SSL_barlow/checkpoint/checkpoint.pth"
 
 ## Fine Tuning
 We fine tuned the pretrained weights above by the folloing steps.

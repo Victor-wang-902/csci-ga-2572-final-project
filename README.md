@@ -1,6 +1,8 @@
 # csci-ga-2572-final-project
 Final competition code repository for CSCI-GA 2572 Deep Learning spring 2022.
 
+Collaborator: Haresh Rengaraj R, Zecheng Wang
+
 All codes in this repository were run on Greene.
 
 ## Pretraining

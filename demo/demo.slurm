@@ -13,10 +13,9 @@
 
 singularity exec --nv \
 --overlay /scratch/xl3136/conda.ext3:ro \
---overlay /scratch/xl3136/dl-sp22-final-project/dataset/unlabeled_224.sqsh \
 --overlay /scratch/xl3136/dl-sp22-final-project/dataset/labeled.sqsh \
 /scratch/work/public/singularity/cuda11.3.0-cudnn8-devel-ubuntu20.04.sif \
 /bin/bash -c "
 source /ext3/env.sh
-python vicreg.py -o adam -n 30 --lr 0.0005
+python vicreg_continued.py -n 20 --lr 0.00005
 "

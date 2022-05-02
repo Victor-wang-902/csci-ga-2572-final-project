@@ -26,11 +26,15 @@ parser.add_argument('--lr',type=float,default='0.05',help='initial learning rate
 opt = parser.parse_args()
 
 
+def exclude_bias_and_norm(p):
+    return p.ndim == 1
+
 def get_transform(train):
     transforms = []
     transforms.append(T.ToTensor())
+    transforms.append(T.Normalization())
     if train:
-        transforms.append(T.RandomHorizontalFlip(0.5))
+        transforms.insert(1, T.RandomHorizontalFlip(0.5))
     return T.Compose(transforms)
 
 def get_model(num_classes):
@@ -56,21 +60,23 @@ def main():
     model = get_model(num_classes)
     model.to(device)
 
-    # state_dict = torch.load("/scratch/xl3136/dl-sp22-final-project/Obj_SSL_barlow/checkpoint/checkpoint2.pth")
+    # state_dict = torch.load("/scratch/xl3136/dl-sp22-final-project/Obj_SSL_barlow/checkpoint/vicreg1.pth")
     # new_state_dict = {}
     # for key in state_dict['model'].keys():
     #     if key.startswith('module.backbone'):
     #         new_key = key.replace('module.backbone', 'backbone.body')
     #         new_state_dict[new_key] = state_dict['model'][key]
     # missing_keys, unexpected_keys = model.load_state_dict(new_state_dict, strict=False)
-    state_dict = torch.load('check_point_bt2adam0.0001.pth')
+    state_dict = torch.load('check_point_vradam0.0001.pth')
     missing_keys, unexpected_keys = model.load_state_dict(state_dict)
     print("missing keys:")
     print(missing_keys)
     print("unexpected_keys:")
     print(unexpected_keys)
-    print("loaded successfully")
-    assert()
+    if len(unexpected_keys) == 0:
+        print("loaded successfully")
+    else:
+        assert False, "loading fail"
 
     params = [p for p in model.parameters() if p.requires_grad]
     if opt.optimizer == 'sgd':
@@ -92,7 +98,7 @@ def main():
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
         # save check point
-        save_name = "check_point_bt2c"+str(opt.lr)+".pth"
+        save_name = "check_point_vrc"+str(opt.lr)+".pth"
         torch.save(model.state_dict(), save_name)
 
     print("That's it!")

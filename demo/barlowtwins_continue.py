@@ -70,7 +70,6 @@ def main():
     print("unexpected_keys:")
     print(unexpected_keys)
     print("loaded successfully")
-    assert()
 
     params = [p for p in model.parameters() if p.requires_grad]
     if opt.optimizer == 'sgd':

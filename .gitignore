@@ -22,3 +22,8 @@ __pycache__
 
 # res
 .DS_Store
+
+# evaluation
+/final_leaderboard_team_8
+/second_leaderboard_team_8
+/gcp

@@ -293,7 +293,7 @@ class Transform:
                                  std=[0.286, 0.278, 0.297])
         ])
         self.transform_prime = transforms.Compose([
-            transforms.RandomResizedCrop(224, interpolation=Image.BICUBIC),
+            transforms.RandomResizedCrop(224,scale=(0.4, 1.0), interpolation=Image.BICUBIC),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.RandomApply(
                 [transforms.ColorJitter(brightness=0.4, contrast=0.4,

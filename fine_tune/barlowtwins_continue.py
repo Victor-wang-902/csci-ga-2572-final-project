@@ -63,7 +63,7 @@ def main():
     #         new_key = key.replace('module.backbone', 'backbone.body')
     #         new_state_dict[new_key] = state_dict['model'][key]
     # missing_keys, unexpected_keys = model.load_state_dict(new_state_dict, strict=False)
-    state_dict = torch.load('check_point_bt2adam0.0001.pth')
+    state_dict = torch.load('check_point_bt.pth')
     missing_keys, unexpected_keys = model.load_state_dict(state_dict)
     print("missing keys:")
     print(missing_keys)

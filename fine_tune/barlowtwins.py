@@ -89,7 +89,7 @@ def main():
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
         # save check point
-        save_name = "check_point_bt2"+opt.optimizer+str(opt.lr)+".pth"
+        save_name = "check_point_bt.pth"
         torch.save(model.state_dict(), save_name)
 
     print("That's it!")

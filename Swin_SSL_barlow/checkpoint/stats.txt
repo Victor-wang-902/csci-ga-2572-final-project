@@ -1,9 +1,0 @@
-main.py
-main.py
-main.py
-main.py
-main.py
-main.py
-{"epoch": 0, "step": 0, "lr_weights": 0.0, "lr_biases": 0.0, "loss": 2039.491943359375, "time": 25}
-{"epoch": 0, "step": 100, "lr_weights": 6.25e-05, "lr_biases": 1.4999999999999998e-06, "loss": 1999.807373046875, "time": 254}
-{"epoch": 0, "step": 200, "lr_weights": 0.000125, "lr_biases": 2.9999999999999997e-06, "loss": 2043.3140869140625, "time": 472}

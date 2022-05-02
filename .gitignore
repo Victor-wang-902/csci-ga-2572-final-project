@@ -8,3 +8,22 @@
 *.yml
 *.gz
 *.zip
+*.sqsh
+
+# slurm
+*.err
+*.out
+
+# python
+__pycache__
+
+# model
+*.pth
+
+# res
+.DS_Store
+
+# evaluation
+/final_leaderboard_team_8
+/second_leaderboard_team_8
+/gcp

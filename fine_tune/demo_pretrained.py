@@ -37,29 +37,34 @@ def get_model(num_classes):
 def main():
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    num_classes = 100
+    num_classes = 101
     train_dataset = LabeledDataset(root='/labeled', split="training", transforms=get_transform(train=True))
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=2, shuffle=True, num_workers=2, collate_fn=utils.collate_fn)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=16, shuffle=True, num_workers=16, collate_fn=utils.collate_fn)
 
     valid_dataset = LabeledDataset(root='/labeled', split="validation", transforms=get_transform(train=False))
-    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=2, shuffle=False, num_workers=2, collate_fn=utils.collate_fn)
+    valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=16, shuffle=False, num_workers=8, collate_fn=utils.collate_fn)
 
     model = get_model(num_classes)
+    if torch.cuda.device_count() > 1:
+        model = nn.DataParallel(model)
     model.to(device)
 
     params = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(params, lr=0.005, momentum=0.9, weight_decay=0.0005)
-    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=3, gamma=0.1)
+    lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.1)
 
-    num_epochs = 1
-
+    num_epochs = 20
+    evaluate(model, valid_loader, device=device)
+    
     for epoch in range(num_epochs):
         # train for one epoch, printing every 10 iterations
-        train_one_epoch(model, optimizer, train_loader, device, epoch, print_freq=10)
+        train_one_epoch(model, optimizer, train_loader, device, epoch, print_freq=100)
         # update the learning rate
         lr_scheduler.step()
         # evaluate on the test dataset
         evaluate(model, valid_loader, device=device)
+        # save check point
+        # torch.save(model.state_dict(), "check_point_demo.pth")
 
     print("That's it!")
 
